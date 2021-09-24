@@ -1,12 +1,54 @@
-Select *
-from PortforlioProject..covidDeaths
+
+
+--Queries used for visualization in Tableu
+
+-- 1.
+
+Select SUM(new_cases) as total_cases, SUM(cast (new_deaths as int)) as total_deahts, SUM(cast(new_deaths as int))/SUM(New_Cases)*100 as DeathPercentage
+From PortforlioProject..covidDeaths
+--Where location like '%Denmark%'
 Where continent != ''
-order by 3,4
+--Group By date
+order by 1,2
 
 
---Select *
---from PortforlioProject..covidVaccinations
---order by 3,4
+
+
+
+--2. 
+
+Select location, SUM(cast(new_deaths as int)) as TotalDeathCount
+From PortforlioProject..covidDeaths
+--Where location like '%denmark%'
+Where continent is null
+and location not in ('World', 'European Union', 'International')
+Group by locationorder by TotalDeathCount desc
+
+
+
+
+
+
+--3
+
+Select Location, Population, MAX(total_cases) as HighestInfectionCount, MAX((total_cases/Population))*100 as PercentPopulationInfected
+From PortforlioProject..covidDeaths
+Group By Location, Population
+order by PercentPopulationInfected desc
+
+
+
+
+--4
+
+
+Select Location, Population, date, MAX(total_cases) as HighestInfectionCount, MAX((total_cases/Population))*100 as PercentPopulationInfected
+From PortforlioProject..covidDeaths
+Group By Location, Population, date
+order by PercentPopulationInfected desc
+
+
+
 
 --Select Data that we are going to be using
 
@@ -32,7 +74,7 @@ From PortforlioProject..covidDeaths
 order by 1,2
 
 
--- Kiijubg at countries with highest ifection rate compared to population
+-- Looking at countries with highest ifection rate compared to population
 
 Select Location, Population, MAX(total_cases) as HighestInfectionCount, MAX((total_cases/Population))*100 as PercentPopulationInfected
 From PortforlioProject..covidDeaths
